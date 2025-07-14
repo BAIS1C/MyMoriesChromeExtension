@@ -16,7 +16,7 @@ Drag the file (or its decode prompt) into **any** other model to continue exactl
 - Chrome 109+  
 - 50 MB free RAM  
 - No GPU / WASM not yet used (v0.6)
-
+v0.5α is the last fully-free release; all items below this line are part of the upcoming paid/open-core tier.
 ### v0.6 Roadmap
 - WASM micro-LLM for smarter compression  
 - VS Code / Obsidian plugins  
