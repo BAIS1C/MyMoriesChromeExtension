@@ -1,14 +1,6 @@
 <!doctype html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>MyMory v0.5 α</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<!doctype html>
-<html>
-<head>
   <meta charset="utf-8"/>
   <title>MyMory v0.61 β</title>
   <link rel="stylesheet" href="styles.css"/>
@@ -20,22 +12,20 @@
   <button id="copyBtn" disabled>📋 Copy Decode Prompt</button>
 
   <label style="display:block;margin:6px 0">
-    <input type="checkbox" id="vsmToggle"/>
-    Vowel-Strip Mode (VSM)
+    <input type="checkbox" id="vsmToggle"/> Vowel-Strip Mode (VSM)
   </label>
 
   <label style="display:block;margin:6px 0">
-    <input type="checkbox" id="fullToggle"/>
-    Save full, uncompressed chat (JSON)
+    <input type="checkbox" id="fullToggle"/> Save full, uncompressed chat (JSON)
   </label>
 
   <footer>
-    <small>
-      MyMory v0.61 β – MIT © 2025 Metafintek.com
-    </small>
+    <small>MyMory v0.61 β – MIT © 2025 Metafintek</small>
   </footer>
 
-  <script type="module" src="popup.js"></script>
+  <!-- UMD build, no ES module -->
+  <script src="lib/transformers.umd.js"></script>
+  <script src="popup.js"></script>
 </body>
 
   <footer>
@@ -47,7 +37,6 @@
       <a href="https://iconscout.com" target="_blank">IconScout</a>
     </span>
   </footer>
-
   <script src="popup.js"></script>
 </body>
 </html>
