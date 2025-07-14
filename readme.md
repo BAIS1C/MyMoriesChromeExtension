@@ -20,6 +20,12 @@ Drag the file (or its decode prompt) into **any** other model to continue exactl
 ### v0.6 Roadmap
 - WASM micro-LLM for smarter compression  
 - VS Code / Obsidian plugins  
+
+### v 1.0 
+- n8n integration
+- mindscape integration
+- agent zero integration
+- Full Archival Data Vault
 - IPFS auto-pin & NFT minting
 
 Made with ❤️ by [Metafintek.com](https://metafintek.com)
