@@ -1,0 +1,23 @@
+body {
+  width: 260px;
+  font-family: system-ui, sans-serif;
+  font-size: 13px;
+  padding: 12px;
+  background: #111;
+  color: #f1f1f1;
+}
+h1 {font-size: 16px; margin: 0 0 8px}
+button {
+  width: 100%;
+  padding: 8px;
+  margin: 4px 0;
+  background: #0af;
+  border: none;
+  border-radius: 4px;
+  color: #000;
+  cursor: pointer;
+}
+button:disabled {background:#555}
+#intro, #roadmap {margin:10px 0}
+footer {text-align:center; font-size:11px; color:#888}
+a {color:#0af}

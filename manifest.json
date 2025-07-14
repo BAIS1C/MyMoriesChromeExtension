@@ -1,0 +1,17 @@
+{
+  "name": "MyMory v0.5 α",
+  "description": "Save any LLM chat as a portable .mmr file.  Context-extender & memory portability—powered by Metafintek.com",
+  "version": "0.5.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "scripting", "downloads"],
+  "action": { "default_popup": "popup.html", "default_title": "MyMory v0.5 α" },
+  "content_scripts": [{
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+  }],
+  "icons": {
+    "16":  "icons/16.png",
+    "48":  "icons/48.png",
+    "128": "icons/128.png"
+  }
+}
