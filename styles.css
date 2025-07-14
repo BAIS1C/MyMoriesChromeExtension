@@ -1,23 +1,129 @@
 body {
   width: 260px;
-  font-family: system-ui, sans-serif;
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   font-size: 13px;
-  padding: 12px;
-  background: #111;
+  font-weight: 400;
+  padding: 16px;
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
   color: #f1f1f1;
+  border-radius: 12px;
+  box-shadow: 
+    inset 2px 2px 5px rgba(0, 0, 0, 0.5),
+    inset -2px -2px 5px rgba(255, 255, 255, 0.1);
+  margin: 0;
 }
-h1 {font-size: 16px; margin: 0 0 8px}
+
+h1 {
+  font-size: 16px; 
+  font-weight: 600;
+  margin: 0 0 12px;
+  text-align: center;
+  background: linear-gradient(135deg, #0af, #08d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
 button {
   width: 100%;
-  padding: 8px;
-  margin: 4px 0;
-  background: #0af;
+  padding: 10px 16px;
+  margin: 6px 0;
+  background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
   border: none;
-  border-radius: 4px;
-  color: #000;
+  border-radius: 8px;
+  color: #0af;
   cursor: pointer;
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.4),
+    -1px -1px 2px rgba(255, 255, 255, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.1);
 }
-button:disabled {background:#555}
-#intro, #roadmap {margin:10px 0}
-footer {text-align:center; font-size:11px; color:#888}
-a {color:#0af}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    3px 3px 6px rgba(0, 0, 0, 0.5),
+    -2px -2px 3px rgba(255, 255, 255, 0.1),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.15);
+  background: linear-gradient(145deg, #2d2d2d, #1d1d1d);
+}
+
+button:active {
+  transform: translateY(1px);
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.4),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.1);
+  background: linear-gradient(145deg, #1a1a1a, #2a2a2a);
+}
+
+button:disabled {
+  background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+  color: #555;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 
+    1px 1px 2px rgba(0, 0, 0, 0.3),
+    inset 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  display: block;
+  margin: 8px 0;
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400;
+  font-size: 12px;
+  padding: 8px 12px;
+  background: linear-gradient(145deg, #1f1f1f, #151515);
+  border-radius: 6px;
+  box-shadow: 
+    inset 1px 1px 2px rgba(0, 0, 0, 0.3),
+    inset -1px -1px 2px rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease;
+}
+
+label:hover {
+  background: linear-gradient(145deg, #222, #181818);
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: #0af;
+  transform: scale(1.1);
+}
+
+#intro, #roadmap {
+  margin: 10px 0;
+}
+
+footer {
+  text-align: center; 
+  font-size: 10px; 
+  color: #777;
+  font-family: 'Segoe UI', 'SF Pro Display', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 300;
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+a {
+  color: #0af;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #0cf;
+  text-shadow: 0 0 4px rgba(0, 170, 255, 0.3);
+}
+
+.attribution {
+  font-size: 9px;
+  color: #555;
+  margin-top: 4px;
+}
