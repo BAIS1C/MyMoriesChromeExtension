@@ -1,0 +1,18 @@
+MyMory Chrome Extension – Copyright © 2025 PT Metafintek (Indonesia)
+
+This program is licensed under the GNU Lesser General Public License v3.0
+(LGPL-3.0-or-later) with the following additional conditions:
+
+1. Attribution – you must visibly credit “Metafintek.com” in:
+   • README / About dialog
+   • License banner in source files you modify
+
+2. Branch-and-Report – if you publish a fork (public or private), you must:
+   • open an issue or PR back to:
+     https://github.com/<your-username>/strands-mymory-ext
+     summarising the purpose and scope of your changes
+   • keep the branch alive and linkable for at least 90 days
+
+These requirements apply to the entire derivative work; if you remove them
+the LGPL-3.0 terms still apply, but you lose the extra permissions granted
+by this NOTICE.
