@@ -3,6 +3,10 @@
 Chrome extension — save any LLM chat as a 30 MB, fully-offline `.mmr` file.  
 
 Works with Gemini and ChatGPT for Exports and compression. Can be Decompress into ANY Top Tier LLM.
+Can download BASE COMPRESSION =/= 20% 
+VSM Compression =/=50%
+FULL text in JSON for compare and contrast testing on your decompressions.
+Decompression prompt auto prepended to txt file. Simply drag this file to the LLM of your choice and carry on from where you left off.
 
 \### Install  
 
