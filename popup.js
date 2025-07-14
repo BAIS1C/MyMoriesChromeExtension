@@ -1,68 +1,54 @@
-// Build .mmr string
-function buildMMR(turns) {
-  const lastUser = turns.filter(t=>t.author==='user').pop()?.text?.slice(0,60) || '';
-  const insight = turns.slice(-3).map(t=>t.text).join(' ').slice(0,120) + '…';
-  return `@SESSION chrome.user.${Date.now()}
-$TIME ${new Date().toISOString()}
-$MODEL unknown
+/* global chrome */
+import { pipeline } from './lib/transformers.min.js';
+
+const vsm = t => t.replace(/\B[aeiou]/gi, '');
+
+let encoder;
+async function getEncoder() {
+  if (!encoder) {
+    encoder = await pipeline(
+      'feature-extraction',
+      './lib/minilm-l6-v2.onnx',
+      { dtype: 'q4', device: 'wasm' }
+    );
+  }
+  return encoder;
+}
+
+document.getElementById('saveBtn').onclick = async () => {
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const { turns, llm } = await chrome.tabs.sendMessage(tab.id, { type: 'HARVEST' });
+  if (!turns.length) return alert('No chat detected.');
+
+  const useVSM = document.getElementById('vsmToggle').checked;
+  const compression = useVSM ? 'vowelstrip' : 'raw';
+
+  const full = turns.map(t => `[${t.author}] ${t.text}`).join('\n');
+  const payload = useVSM ? turns.map(t => `[${t.author}] ${vsm(t.text)}`).join('\n') : full;
+
+  const enc = await getEncoder();
+  const vector = await enc(payload, { pooling: 'mean' });
+  const summary = `Summary of ${turns.length} turns, length ${payload.length} chars`;
+  const checksum = btoa(summary).slice(-6);
+
+  const block = `
+📌 CONTEXT INJECTION – MyMory Recall
+- LLM: ${llm}
+- Compression: ${compression}
+- Turns: ${turns.length}
 
 >KEY_INSIGHTS
-- ${insight}
+- ${summary}
 
->STATE_OBJECTS
-turns==${turns.length}
-compressed==true
-
->OPEN_LOOPS
-- Continue conversation
-- ${lastUser ? `Next user input: "${lastUser}…"` : 'Awaiting user'}
-
-[[CODE]]
-/* no code blocks captured */
-[[/CODE]]
-
-@CHECKSUM#${btoa(insight).slice(-6)}
-`;
-}
-
-// Build dynamic decode prompt
-function buildDecodePrompt(mmr, turns) {
-  const lastUser = turns.filter(t=>t.author==='user').pop()?.text?.slice(0,60) || '';
-  return `
-📌 CONTEXT INJECTION – MyMory Recall Format
-Resume from compressed memory below.
-- Assume prior assistant role **in-progress**—do **not** greet or repeat earlier turns.
-- Treat KEY_INSIGHTS as immediate working knowledge.
-- Treat STATE_OBJECTS as current tool / variable state.
-- Treat OPEN_LOOPS as the very next actions to address.
-${lastUser ? `\nNext user message: "${lastUser}…"` : ''}
-
---- MyMory Block ---
-${mmr}
+@CHECKSUM#${checksum}
 --- End Block ---
-`;
-}
+`.trim();
 
-// Event wiring
-document.getElementById('saveBtn').onclick = async () => {
-  const [tab] = await chrome.tabs.query({active:true, currentWindow:true});
-  const turns = await chrome.tabs.sendMessage(tab.id, {type:'HARVEST'});
-  if (!turns.length) return alert('No chat detected on this page.');
-
-  const mmr = buildMMR(turns);
-  const subject = turns[0]?.text.slice(0,30).replace(/[^a-z0-9]/gi,'') || 'chat';
-  const date = new Date().toISOString().slice(0,10);
-  const filename = `${subject}${date}.mmr`;
-
-  const blob = new Blob([mmr], {type:'text/plain'});
+  const filename = `${llm}-${Date.now()}.mmr`;
+  const blob = new Blob([block], { type: 'text/plain' });
   const url = URL.createObjectURL(blob);
-  chrome.downloads.download({url, filename});
+  chrome.downloads.download({ url, filename });
 
-  const prompt = buildDecodePrompt(mmr, turns);
-  navigator.clipboard.writeText(prompt);
+  navigator.clipboard.writeText(block);
   document.getElementById('copyBtn').disabled = false;
-};
-
-document.getElementById('copyBtn').onclick = () => {
-  // already copied above; button is just UX
 };

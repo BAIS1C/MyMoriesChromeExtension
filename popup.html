@@ -6,26 +6,37 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>MyMory v0.5 α</h1>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <title>MyMory v0.61 β</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <h1>MyMory v0.61 β</h1>
 
-  <button id="saveBtn" type="button">💾 Save .mmr</button>
-  <button id="copyBtn" type="button" disabled>📋 Copy Decode Prompt</button>
+  <button id="saveBtn">💾 Save .mmr</button>
+  <button id="copyBtn" disabled>📋 Copy Decode Prompt</button>
 
-  <div id="intro">
-    <p><strong>What is MyMory?</strong><br>
-    A lightweight tool that turns any LLM conversation into a <em>context-extender</em> file (<code>.mmr</code>).  
-    Keep, share, or resume chats on <strong>any other model</strong> without hitting token limits.</p>
-  </div>
+  <label style="display:block;margin:6px 0">
+    <input type="checkbox" id="vsmToggle"/>
+    Vowel-Strip Mode (VSM)
+  </label>
 
-  <div id="roadmap">
-    <h3>v0.6 Roadmap (coming soon)</h3>
-    <ul>
-      <li>🔧 WASM micro-LLM for smarter compression</li>
-      <li>🧩 VS Code / Obsidian plugins</li>
-      <li>🪐 IPFS auto-pin & NFT minting</li>
-    </ul>
-    <small>Min-sys: Chrome 109+, 50 MB RAM free, no GPU required.</small>
-  </div>
+  <label style="display:block;margin:6px 0">
+    <input type="checkbox" id="fullToggle"/>
+    Save full, uncompressed chat (JSON)
+  </label>
+
+  <footer>
+    <small>
+      MyMory v0.61 β – MIT © 2025 Metafintek.com
+    </small>
+  </footer>
+
+  <script type="module" src="popup.js"></script>
+</body>
 
   <footer>
     by <a href="https://metafintek.com" target="_blank">Metafintek.com</a><br>
