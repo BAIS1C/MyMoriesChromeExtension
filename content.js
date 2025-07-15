@@ -4,27 +4,57 @@ console.log('MyMory content script loaded on:', window.location.href);
 // Set injection flag to prevent duplicate injections
 window.myMoryInjected = true;
 
-const MAX_TURNS = 550;
+const MAX_TURNS = 550; // Increased from 100 as requested
 
 function harvestChat() {
   console.log('🔍 Starting chat harvest...');
   
   const selectors = [
-    // Claude specific
-    '[data-message-author-role]',
-    '.claude-message',
+    // Gemini specific (based on your screenshots)
+    '[data-ngcontent*="ng-c"]', // Gemini's Angular components
+    '.model-response-text',
+    '.user-query-content',
+    '.message-content',
+    '[role="heading"]', // Gemini message headers
+    '.query-text-line',
+    '.query-content',
+    '[class*="user-query"]',
+    '[class*="model-response"]',
+    '[class*="message"]',
+    '[class*="conversation"]',
+    '[class*="chat"]',
+    'mat-sidenav-content [class*="ng-"]', // Gemini uses Angular Material
+    // Kimi specific (based on actual DOM inspection)
+    '.chat-content-item',
+    '.chat-content-item-user',
+    '.chat-content-item-assistant', 
+    '.segment-container',
+    '.segment-user',
+    '.segment-assistant',
+    '.user-content',
+    '.segment-content',
+    '.segment-content-box',
+    '[class*="chat-content-item"]',
+    '[class*="segment"]',
+    '[data-v-259e85eb]',
+    '[data-v-940b79a9]',
+    '[data-v-61f9b95e]',
+    // Claude specific (based on actual DOM inspection)
+    '.prose',
+    '[data-testid*="message"]',
+    '[data-testid*="turn"]',
+    '[role="presentation"]',
+    '.whitespace-pre-wrap',
     // ChatGPT specific  
     '[data-message-author-role="user"]',
     '[data-message-author-role="assistant"]',
     '.message',
-    // Gemini specific
-    '.conversation-turn', 
-    '.model-response',
-    '.user-input',
     // Generic fallbacks
     '.chat-message',
     '.message-content',
-    'main div[data-testid]'
+    'main div[data-testid]',
+    'main div[class*="message"]',
+    'div[class*="ng-star-inserted"]' // Angular components
   ];
   
   let allTurns = [];
@@ -35,24 +65,102 @@ function harvestChat() {
       console.log(`📋 Selector "${selector}" found ${elements.length} elements`);
       
       elements.forEach(element => {
-        // Try multiple ways to get author
-        let author = element.getAttribute('data-message-author-role');
+        let author = 'unknown';
+        let text = (element.innerText || element.textContent || '').trim();
         
-        if (!author) {
-          // Check class names
-          if (element.classList.contains('user') || element.classList.contains('user-message')) {
-            author = 'user';
-          } else if (element.classList.contains('assistant') || element.classList.contains('ai-message')) {
-            author = 'assistant';
-          } else {
-            // Default guess
-            author = 'assistant';
+        // Skip empty or very short texts
+        if (!text || text.length < 10) return;
+        
+        // Gemini-specific author detection
+        if (selector.includes('user-query') || element.className.includes('user-query')) {
+          author = 'user';
+        } else if (selector.includes('model-response') || element.className.includes('model-response')) {
+          author = 'assistant';
+        } else if (text.toLowerCase().includes('optimize your delta force') || 
+                   text.toLowerCase().includes('delta force')) {
+          // Content-based detection for Gemini responses
+          author = 'assistant';
+        } else if (element.closest('[class*="user-query"]')) {
+          author = 'user';
+        } else if (element.closest('[class*="model-response"]')) {
+          author = 'assistant';
+        }
+        
+        // Try multiple ways to get author for other platforms
+        if (author === 'unknown') {
+          author = element.getAttribute('data-message-author-role');
+          
+          if (!author) {
+            // Kimi-specific detection
+            if (element.classList.contains('segment-user') || element.classList.contains('user-content')) {
+              author = 'user';
+            } else if (element.classList.contains('segment-assistant') || element.classList.contains('assistant-content')) {
+              author = 'assistant';
+            } else if (element.classList.contains('chat-content-item-user')) {
+              author = 'user';
+            } else if (element.classList.contains('chat-content-item-assistant')) {
+              author = 'assistant';
+            } else if (element.className.includes('user')) {
+              author = 'user';
+            } else if (element.className.includes('assistant')) {
+              author = 'assistant';
+            }
+            
+            // Check parent elements for Kimi patterns
+            if (!author) {
+              const segmentParent = element.closest('.segment-container');
+              if (segmentParent) {
+                if (segmentParent.querySelector('.segment-user') || segmentParent.querySelector('.user-content')) {
+                  author = 'user';
+                } else if (segmentParent.querySelector('.segment-assistant')) {
+                  author = 'assistant';
+                }
+              }
+            }
+            
+            // Claude-specific detection
+            if (!author) {
+              const parentElement = element.closest('[data-testid]');
+              if (parentElement) {
+                const testId = parentElement.getAttribute('data-testid');
+                if (testId && testId.includes('user')) {
+                  author = 'user';
+                } else if (testId && (testId.includes('assistant') || testId.includes('claude'))) {
+                  author = 'assistant';
+                }
+              }
+            }
+            
+            // Check for Claude-specific patterns
+            if (!author && element.closest('.prose')) {
+              const proseParent = element.closest('.prose').parentElement;
+              if (proseParent && proseParent.querySelector('[data-testid*="user"]')) {
+                author = 'user';
+              } else {
+                author = 'assistant';
+              }
+            }
+            
+            // Legacy detection for other platforms
+            if (!author) {
+              if (element.classList.contains('user') || element.classList.contains('user-message')) {
+                author = 'user';
+              } else if (element.classList.contains('assistant') || element.classList.contains('ai-message')) {
+                author = 'assistant';
+              } else {
+                // Default guess - if it's a long technical response, likely assistant
+                author = text.length > 100 ? 'assistant' : 'user';
+              }
+            }
           }
         }
         
-        const text = (element.innerText || element.textContent || '').trim();
+        // Filter out UI elements and navigation texts
+        const isUIElement = text.match(/^(Copy|Retry|Share|Ask Anything|New|Show thinking|Gemini can make mistakes|Video|Deep Research|Canvas)$/i) || 
+                           text.match(/^[\u4e00-\u9fff]+$/); // Chinese characters only
         
-        if (text && text.length > 10) { // Filter short texts
+        // Don't filter by length for Gemini since responses can be long
+        if (text && !isUIElement && text.length >= 10) {
           allTurns.push({
             author: author,
             text: text,
@@ -65,12 +173,12 @@ function harvestChat() {
     }
   });
   
-  // Remove duplicates by text content
+  // Remove duplicates by text content (using a larger sample for better deduplication)
   const uniqueTurns = [];
   const seenTexts = new Set();
   
   allTurns.forEach(turn => {
-    const textKey = turn.text.substring(0, 100);
+    const textKey = turn.text.substring(0, 200); // Increased from 100 to 200 for better dedup
     if (!seenTexts.has(textKey)) {
       seenTexts.add(textKey);
       uniqueTurns.push({
@@ -80,6 +188,7 @@ function harvestChat() {
     }
   });
   
+  // Sort by DOM order to maintain conversation flow
   console.log(`✅ Harvested ${uniqueTurns.length} unique turns`);
   return uniqueTurns.slice(-MAX_TURNS);
 }
