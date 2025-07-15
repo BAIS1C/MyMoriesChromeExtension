@@ -4,7 +4,7 @@ console.log('MyMory content script loaded on:', window.location.href);
 // Set injection flag to prevent duplicate injections
 window.myMoryInjected = true;
 
-const MAX_TURNS = 550; // Increased from 100 as requested
+const MAX_TURNS = 550; // Increased from 100
 
 function harvestChat() {
   console.log('🔍 Starting chat harvest...');
@@ -15,12 +15,12 @@ function harvestChat() {
     'div[data-testid="user-input"]', // User query input
     'div[data-testid="grok-response"]', // Grok's response
     '[data-testid*="conversation-turn"]', // Potential turn marker
-    '.css-1j6n98s', // Content div from screenshot
-    '.css-175b12r', // Container class from screenshot
+    '.css-1j6n98s', // Content div 
+    '.css-175b12r', //
     '[data-testid*="grok"]',
     '[data-testid*="chat"]',
     '[data-testid*="message"]',
-    // Gemini specific (based on your screenshots)
+    // Gemini specific 
     '[data-ngcontent*="ng-c"]', // Gemini's Angular components
     '.model-response-text',
     '.user-query-content',
