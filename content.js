@@ -10,6 +10,16 @@ function harvestChat() {
   console.log('🔍 Starting chat harvest...');
   
   const selectors = [
+    // Grok specific (based on X integration)
+    'div[data-testid="tweetText"]', // X post content used by Grok
+    'div[data-testid="user-input"]', // User query input
+    'div[data-testid="grok-response"]', // Grok's response
+    '[data-testid*="conversation-turn"]', // Potential turn marker
+    '.css-1j6n98s', // Content div from screenshot
+    '.css-175b12r', // Container class from screenshot
+    '[data-testid*="grok"]',
+    '[data-testid*="chat"]',
+    '[data-testid*="message"]',
     // Gemini specific (based on your screenshots)
     '[data-ngcontent*="ng-c"]', // Gemini's Angular components
     '.model-response-text',
@@ -71,8 +81,20 @@ function harvestChat() {
         // Skip empty or very short texts
         if (!text || text.length < 10) return;
         
+        // Grok-specific author detection
+        if (selector.includes('grok-response') || element.getAttribute('data-testid') === 'grok-response') {
+          author = 'assistant';
+        } else if (selector.includes('user-input') || element.getAttribute('data-testid') === 'user-input') {
+          author = 'user';
+        } else if (selector.includes('tweetText')) {
+          // X post content could be either, analyze context
+          author = text.length > 200 ? 'assistant' : 'user';
+        } else if (element.closest('[data-testid*="grok"]')) {
+          author = 'assistant';
+        }
+        
         // Gemini-specific author detection
-        if (selector.includes('user-query') || element.className.includes('user-query')) {
+        else if (selector.includes('user-query') || element.className.includes('user-query')) {
           author = 'user';
         } else if (selector.includes('model-response') || element.className.includes('model-response')) {
           author = 'assistant';

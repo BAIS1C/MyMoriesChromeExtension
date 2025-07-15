@@ -1,122 +1,42 @@
-\# Changelog
-
-
-
-\## \[0.63] - 2025-01-XX
-
-
-
-\### 🚀 New LLM Support
-
-\- \*\*Gemini 2.5 Pro Support\*\*: Full conversation extraction from gemini.google.com
-
-\- \*\*Enhanced DOM Detection\*\*: Improved Angular component recognition for Gemini's interface
-
-\- \*\*Increased Turn Limit\*\*: Default max turns raised from 100 to 550
-
-
-
-\### 🔧 Technical Improvements  
-
-\- \*\*Better Author Detection\*\*: Improved user/assistant classification for Gemini conversations
-
-\- \*\*Content-Based Recognition\*\*: Smart detection of technical responses vs user queries
-
-\- \*\*Deduplication Enhancement\*\*: Larger text sample (200 chars) for better duplicate removal
-
-
-
-\### 🎯 Platform Coverage
-
-\- \*\*Working\*\*: ChatGPT, Claude, Gemini, Kimi
-
-\- \*\*Limited\*\*: Perplexity, Grok, DeepSeek, Poe
-
-
-
-
-
-\## \[0.62] - 2025-01-XX
-
-
-
-\### 🚀 Major Performance Improvements
-
-\- \*\*On-demand activation\*\*: Extension now only activates when clicked, eliminating background resource overhead
-
-\- \*\*Zero-impact browsing\*\*: No content scripts running on websites until explicitly used
-
-\- \*\*Instant activation\*\*: No refresh required after installation
-
-
-
-\### 🎯 Enhanced User Experience  
-
-\- \*\*Simplified UI\*\*: Streamlined interface with clearer messaging
-
-\- \*\*Context-aware detection\*\*: Smart detection of current platform (ChatGPT, Claude, etc.)
-
-\- \*\*Improved instructions\*\*: Clear drag-and-drop guidance for LLM integration
-
-\- \*\*Better file naming\*\*: Descriptive filenames with timestamps
-
-
-
-\### 📁 File Format Updates
-
-\- \*\*TXT output\*\*: Changed from .mmr to .txt format for universal compatibility
-
-\- \*\*Drag-and-drop ready\*\*: Files include embedded decompression instructions
-
-\- \*\*Multiple export options\*\*: Compressed TXT + optional full JSON backup
-
-
-
-\### 🌐 Expanded Scope
-
-\- \*\*Web archiving\*\*: Now supports saving any web content, not just chat conversations
-
-\- \*\*Universal decompression\*\*: All major LLMs can restore archived content
-
-\- \*\*Flexible source detection\*\*: Manual override options for platform detection
-
-
-
-\### 🔧 Technical Improvements
-
-\- \*\*Manifest V3 optimization\*\*: Modern Chrome extension architecture
-
-\- \*\*Improved error handling\*\*: Better feedback for connection issues
-
-\- \*\*Permission refinement\*\*: More targeted permissions for enhanced privacy
-
-\- \*\*Code organization\*\*: Cleaner separation of concerns
-
-
-
-\### ⚠️ Known Limitations
-
-\- Chat extraction currently limited to ChatGPT
-
-\- Other LLM platforms have limited parsing capability
-
-\- All platforms support decompression functionality
-
-
-
----
-
-
-
-\## \[0.61] - Previous Release
-
-\- Initial beta release
-
-\- Basic .mmr file generation
-
-\- ChatGPT and Gemini support
-
-\- Manual refresh requirement
-
-\- Always-on content scripts
-
+# Changelog
+
+## [0.63] - 2025-01-XX
+
+### 🚀 New LLM Support
+- **Gemini 2.5 Pro Support**: Full conversation extraction from gemini.google.com
+- **Grok Support**: Full conversation extraction from X/Grok integration
+- **Enhanced DOM Detection**: Improved Angular component recognition for Gemini's interface
+- **X Platform Integration**: Support for Grok conversations within X ecosystem
+- **Increased Turn Limit**: Default max turns raised from 100 to 550
+
+### 🔧 Technical Improvements  
+- **Better Author Detection**: Improved user/assistant classification for Gemini conversations
+- **Content-Based Recognition**: Smart detection of technical responses vs user queries
+- **Deduplication Enhancement**: Larger text sample (200 chars) for better duplicate removal
+
+### 🎯 Platform Coverage
+- **Working**: ChatGPT, Claude, Gemini, Kimi, Grok
+- **Limited**: Perplexity, DeepSeek, Poe
+
+## [0.62] - 2025-01-XX
+
+### 🚀 Major Performance Improvements
+- **On-demand Activation**: Extension now only activates when clicked, eliminating background resource overhead
+- **Zero-impact Browsing**: No content scripts running on websites until extension is used
+- **Simplified UI**: Removed refresh requirement notice
+
+### 🔧 Core Functionality
+- **Enhanced Compression**: VSM + Dictionary compression for 50% smaller files
+- **Smart Detection**: Auto-detects ChatGPT, Claude, Kimi and other LLM platforms
+- **Flexible Export**: Choose between compressed .txt or full JSON formats
+- **Improved Error Handling**: Better feedback for unsupported sites
+
+### 📝 User Experience
+- **Context-Aware UI**: Button text changes based on detected platform
+- **Clear Instructions**: "Drag and drop your txt into any LLM" guidance
+- **Source Override**: Manual platform selection when auto-detection fails
+
+### 🛠️ Technical Debt
+- **Manifest V3**: Full migration to modern Chrome extension standards
+- **On-demand Injection**: Content scripts only load when needed
+- **Reduced Permissions**: Minimal permission footprint

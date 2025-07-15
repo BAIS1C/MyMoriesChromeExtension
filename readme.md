@@ -2,12 +2,12 @@
 
 Chrome extension — save any LLM chat as a portable, fully-offline `.txt` file.  
 
-✅ **Currently supports chat extraction from ChatGPT, Claude, Gemini & Kimi.** All LLMs can decompress your saved files.
+✅ **Currently supports chat extraction from ChatGPT, Claude, Gemini, Kimi & Grok.** All LLMs can decompress your saved files.
 
 ## Features
 
 - **Smart Compression**: VSM compression achieves ~50% size reduction
-- **Multi-Platform Support**: Extract conversations from ChatGPT, Claude, Google Gemini & Kimi
+- **Multi-Platform Support**: Extract conversations from ChatGPT, Claude, Google Gemini, Kimi & Grok
 - **Universal Compatibility**: Exported files work with any top-tier LLM
 - **On-Demand Activation**: Zero overhead until you click to use
 - **Web Archiving**: Save any web content, not just chat conversations
@@ -21,10 +21,10 @@ Chrome extension — save any LLM chat as a portable, fully-offline `.txt` file.
 - **Claude** (claude.ai) 
 - **Google Gemini** (gemini.google.com)
 - **Kimi** (kimi.com)
+- **Grok** (x.com/i/grok)
 
 ### ⚠️ Limited Support (Basic Content Archiving)
 - **Perplexity** (perplexity.ai)
-- **Grok** (x.com/i/grok)
 - **DeepSeek** (chat.deepseek.com)
 - **Poe** (poe.com)
 
@@ -54,7 +54,7 @@ v1.0 release planned for Chrome Web Store
 
 ### ⚠️ Important Notes
 
-- **Best Results**: ChatGPT, Claude, Gemini & Kimi offer full conversation extraction
+- **Best Results**: ChatGPT, Claude, Gemini, Kimi & Grok offer full conversation extraction
 - **Other Platforms**: Limited extraction but universal decompression support
 - **Web Content**: Any webpage content can be archived
 - **File Size**: Compressed files typically under 30MB
@@ -70,7 +70,7 @@ v1.0 release planned for Chrome Web Store
 ## Coming Soon
 
 - **v1.0**: Chrome Web Store release
-- **More LLM Support**: Perplexity, Grok, DeepSeek full extraction
+- **More LLM Support**: Perplexity, DeepSeek full extraction
 - **Full Data Vault**: Complete archival system
 - **IPFS Integration**: Auto-pin & NFT minting
 

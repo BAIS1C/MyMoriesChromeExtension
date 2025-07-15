@@ -1,7 +1,7 @@
 {
-  "name": "MyMory v0.62 β",
+  "name": "MyMory v0.63 β",
   "description": "Save any LLM chat as a portable .txt file (offline, 30 MB)",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "manifest_version": 3,
   "permissions": ["activeTab", "downloads", "scripting"],
   "content_security_policy": {

@@ -5,7 +5,7 @@ const detectSourceContext = (url) => {
     { pattern: /claude\.ai/, source: 'Claude', sourceType: 'LLM', working: true },
     { pattern: /gemini\.google\.com/, source: 'Gemini', sourceType: 'LLM', working: true },
     { pattern: /perplexity\.ai/, source: 'Perplexity', sourceType: 'LLM', working: false },
-    { pattern: /grok\.com|x\.com\/i\/grok/, source: 'Grok', sourceType: 'LLM', working: false },
+    { pattern: /grok\.com|x\.com\/i\/grok/, source: 'Grok', sourceType: 'LLM', working: true },
     { pattern: /kimi\.com|kimi\.moonshot\.cn/, source: 'Kimi', sourceType: 'LLM', working: true },
     { pattern: /chat\.deepseek\.com/, source: 'DeepSeek', sourceType: 'LLM', working: false },
     { pattern: /poe\.com/, source: 'Poe', sourceType: 'LLM', working: false }
@@ -233,7 +233,7 @@ document.getElementById('saveBtn').onclick = async () => {
       detection = {
         source: override,
         sourceType: override === 'URL' ? 'URL' : 'LLM',
-        working: ['ChatGPT', 'Claude', 'Gemini', 'Kimi'].includes(override),
+        working: ['ChatGPT', 'Claude', 'Gemini', 'Kimi', 'Grok'].includes(override),
         confidence: 'override'
       };
     }
