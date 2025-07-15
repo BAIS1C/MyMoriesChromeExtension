@@ -1,0 +1,146 @@
+# MetaWrap Production Roadmap
+
+## Project Overview
+
+MetaWrap is a multi-LLM context continuity framework that enables users to:
+
+* Seamlessly compress, export, and resume chat sessions across platforms
+* Preserve only relevant memory fragments using VSM (Variable Semantic Minimization)
+* Extend functionality to obfuscated LLMs (Claude, Grok, Kimi) via OCR and print capture
+* Support fine-tuned local models for in-browser lossy summarization, tagging, and memory graphing
+
+> **Note**: MetaWrap is built to be lean, fast, and one-click simple. No bloated dependencies, no unnecessary UI. "Nice-to-haves" like advanced auto-tagging and full diagram syncing will come **after core traction is achieved**. The current focus is minimal friction, maximal context retention.
+
+---
+
+## Phase 1: Chrome Extension MVP (July 2024)
+
+**Status**: ✅ Completed
+
+### Features:
+
+* One-click `.mmr` export of LLM chats (ChatGPT, Gemini)
+* VSM compression (vowel-stripping + semantic heuristics)
+* Manual save + recall with popup UI
+* No backend, all local storage
+
+### Short-Term Additions:
+
+* Hover preview on `.mmr` files
+* Unique ID timestamping and session metadata tagging
+* Better file naming and toast notifications
+
+---
+
+## Phase 2: Obfuscation Bypass via OCR (Mid–Late July 2024)
+
+**Status**: 🔄 In progress
+
+### Goal:
+
+Handle LLMs with restricted DOM access using print-to-PDF + OCR as fallback.
+
+### Flow:
+
+```mermaid
+flowchart LR
+  UserClicksSave --> DetectObfuscation --> |DOM fails| TriggerPrint --> OCR --> CompressVSM --> Save.mmr
+```
+
+### Implementation:
+
+* `window.print()` auto-triggered with JS-injected CSS cleaner
+* OCR with Tesseract.js in-browser (or server-side OCR as opt-in Pro tier)
+* Error-correction post-OCR for layout alignment
+
+### Enhancement:
+
+* Add **OCR Confidence Scoring**: if `avg(confidence) < 85%`, prompt user to review text before compression.
+
+### Challenges:
+
+* Pagination variance between LLM UIs
+* OCR accuracy on noisy dark UIs
+
+---
+
+## Phase 3: Lossy Compression via MiniLM (Early–Mid August 2024)
+
+**Status**: 🔜 Upcoming
+
+### Goal:
+
+Use a local mini-LM (\~60MB) to:
+
+* Drop irrelevant content
+* Tag important content with `@highlight`, `@idea`, `@directive`, etc.
+* Structure `.mmr` content for more useful downstream reinjection
+
+### Tasks:
+
+1. Fine-tune a 200–500M model (e.g., Phi-1.5, TinyLlama) on `.mmr` logs
+2. Train for semantic compression, tagging, and filler removal
+3. Quantize to q4\_K\_M and deploy as GGUF/WASM bundle
+
+### Expanded Tag Set:
+
+| Tag           | Description                         | Example                                                       |
+| ------------- | ----------------------------------- | ------------------------------------------------------------- |
+| `@highlight`  | Marked by user or LM as key insight | Use this method to inject summaries                           |
+| `@idea`       | Exploratory thoughts                | What if we used OCR instead of scraping?                      |
+| `@directive`  | Clear instructions or decisions     | Switch to Claude for next step                                |
+| `@constraint` | Frictions or limits                 | Grok uses iframes, can't DOM scrape                           |
+| `@code`       | Code blocks                         | function compressVSM()                                        |
+| `@source`     | Links and citations                 | [https://huggingface.co/Qwen](https://huggingface.co/Qwen)... |
+| `@todo`       | Actionable items                    | Add hover preview for .mmr next                               |
+
+---
+
+## Phase 4: Auto-Tagging + Visual Memory (Late August – Early September)
+
+### Features:
+
+* Auto-tagging with LM + manual highlights via right-click
+* Export `.mmr` + `.mmd` (Mermaid) visual memory graphs
+* One-click Gantt and flowchart exports for team/project-level continuity
+
+### Integration:
+
+* Obsidian plugin or viewer panel for `.mmr` + Mermaid visual memory
+* Embed `.mmr` replay & summaries into other LLMs
+
+### DeepSeek-Inspired Enhancements:
+
+* Mermaid preview and download (SVG, PNG)
+* Bidirectional editing: user edits graph → `.mmr` updates dynamically
+* Tagging timeline in UI
+* Reinjectable fragments shown as hoverable memory blocks
+
+---
+
+## Timeline Overview
+
+```mermaid
+gantt
+  title MetaWrap Production Roadmap
+  dateFormat YYYY-MM-DD
+  section Core
+  One-Click VSM Export     :done, 2024-07-01, 14d
+  Print-to-OCR             :active, 2024-07-15, 21d
+  section Advanced
+  LM Compression           :2024-08-05, 21d
+  Auto-Tagging + Visuals   :2024-08-26, 14d
+  OCR Confidence Handling  :2024-07-25, 5d
+  Expand Fine-Tune Tagging :2024-08-01, 3d
+  Bidirectional Mermaid Sync :2024-09-01, 10d
+```
+
+---
+
+## Final Summary
+
+MetaWrap is not a memory system — it’s a **cognitive shell** that wraps and extends LLMs across vendors. By prioritizing **compression**, **interoperability**, and **agent-agnostic tagging**, it enables users to preserve meaning across fragmented AI experiences.
+
+All decisions in this roadmap balance feasibility (Chrome extension MVP) with long-term ambition (cross-agent continuity, memory visualization, LM-enhanced compression). The roadmap is intentionally lean, modular, and one-click oriented — **nice-to-haves will come later, after early traction proves the core utility.**
+
+> We ship lean. We compress fast. We remember what matters.

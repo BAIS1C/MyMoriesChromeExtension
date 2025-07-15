@@ -1,7 +1,10 @@
 // Enhanced content script with better error handling and debugging
 console.log('MyMory content script loaded on:', window.location.href);
 
-const MAX_TURNS = 100;
+// Set injection flag to prevent duplicate injections
+window.myMoryInjected = true;
+
+const MAX_TURNS = 550;
 
 function harvestChat() {
   console.log('🔍 Starting chat harvest...');
@@ -81,7 +84,7 @@ function harvestChat() {
   return uniqueTurns.slice(-MAX_TURNS);
 }
 
-// IMPORTANT: Use chrome.runtime.onMessage, not chrome.runtime.onMessage
+// Only set up message listener if chrome runtime is available
 if (chrome && chrome.runtime && chrome.runtime.onMessage) {
   chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     console.log('📨 Content script received message:', message);

@@ -2,24 +2,55 @@
 <html>
 <head>
   <meta charset="utf-8"/>
-  <title>MyMory v0.61 β</title>
+  <title>MyMory v0.62 β</title>
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <h1>MyMory v0.61 β</h1>
+  <h1>MyMory v0.62 β</h1>
 
-  <button id="saveBtn">💾 Save .mmr</button>
+  <!-- Context-aware warning (hidden by default) -->
+  <div id="compatibilityWarning" class="warning-note" style="display: none;">
+    ⚠️ We are unable to parse data from <span id="llmName"></span> and can only read ChatGPT. All LLMs can decompress your files.
+  </div>
 
-  <label style="display:block;margin:6px 0">
-    <input type="checkbox" id="vsmToggle"/> Vowel-Strip Mode (VSM)
-  </label>
+  <!-- Context-aware main button -->
+  <button id="saveBtn">💾 Save MyMory as TXT</button>
 
-  <label style="display:block;margin:6px 0">
-    <input type="checkbox" id="fullToggle"/> Save full, uncompressed chat (JSON)
-  </label>
+  <!-- New instruction text -->
+  <div class="instruction-note">
+    📋 Drag and drop your txt into any LLM and press return for instant context continuation.
+  </div>
+
+  <!-- Always visible options -->
+  <div class="options-section">
+    <label>
+      Source Override: 
+      <select id="sourceOverride">
+        <option value="">Auto-detect</option>
+        <option value="ChatGPT">ChatGPT</option>
+        <option value="Claude">Claude</option>
+        <option value="Gemini">Gemini</option>
+        <option value="Perplexity">Perplexity</option>
+        <option value="URL">Web Content</option>
+        <option value="Other">Other LLM</option>
+      </select>
+    </label>
+
+    <label>
+      <input type="checkbox" id="vsmToggle" checked/> VSM Compression (default - 50% smaller)
+    </label>
+    
+    <div class="compression-info">
+      💡 Uncheck if your LLM has problems in restoring.
+    </div>
+
+    <label>
+      <input type="checkbox" id="fullToggle"/> Also save full uncompressed chat (JSON)
+    </label>
+  </div>
 
   <footer>
-    <small>MyMory v0.61 β – MIT © 2025 Metafintek</small><br>
+    <small>MyMory v0.62 β – MIT © 2025 Metafintek</small><br>
     by <a href="https://metafintek.com" target="_blank">Metafintek.com</a><br>
     <span class="attribution">
       Icon by
@@ -29,6 +60,8 @@
     </span>
   </footer>
 
+  <!-- Load compression dictionary first -->
+  <script src="compression-dictionary.js"></script>
   <!-- UMD build, no ES module -->
   <script src="lib/transformers.umd.js"></script>
   <script src="popup.js"></script>
