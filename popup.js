@@ -30,13 +30,7 @@ const updateContextAwareUI = (detection) => {
   const saveBtn = document.getElementById('saveBtn');
   const warningDiv = document.getElementById('compatibilityWarning');
   const llmNameSpan = document.getElementById('llmName');
-<<<<<<< Updated upstream
-  const refreshNote = document.querySelector('.refresh-note');
 
-  // Context
-=======
-
->>>>>>> Stashed changes
   if (detection.sourceType === 'LLM') {
     if (detection.working) {
       // Working LLM - confident messaging
