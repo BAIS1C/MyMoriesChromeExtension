@@ -32,11 +32,7 @@ const updateContextAwareUI = (detection) => {
   const llmNameSpan = document.getElementById('llmName');
   const refreshNote = document.querySelector('.refresh-note');
 
-  // Remove refresh note since we don't need it anymore
-  if (refreshNote) {
-    refreshNote.style.display = 'none';
-  }
-
+  // Context
   if (detection.sourceType === 'LLM') {
     if (detection.working) {
       // Working LLM - confident messaging
