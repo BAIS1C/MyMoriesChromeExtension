@@ -30,9 +30,13 @@ const updateContextAwareUI = (detection) => {
   const saveBtn = document.getElementById('saveBtn');
   const warningDiv = document.getElementById('compatibilityWarning');
   const llmNameSpan = document.getElementById('llmName');
+<<<<<<< Updated upstream
   const refreshNote = document.querySelector('.refresh-note');
 
   // Context
+=======
+
+>>>>>>> Stashed changes
   if (detection.sourceType === 'LLM') {
     if (detection.working) {
       // Working LLM - confident messaging
@@ -110,25 +114,9 @@ const harvestChat = async (tabId) => {
 
 // Enhanced decode prompt with LLM-specific handling
 const generateDecodePrompt = (turns, sourceType, llm, useVSM, mmrContent, summary) => {
-  // Special handling for Gemini
-  if (llm === 'Gemini') {
-    const chatText = mmrContent.split('>COMPRESSED_CHAT\n')[1]?.split('\n@CHECKSUM#')[0] || '';
-    
-    return `${chatText}
-
-Continue this conversation naturally. This appears to be a technical discussion about gaming optimization and Delta Force launch parameters.
-
-Respond as if this conversation just happened and offer to continue the discussion or summarize the key points.`;
-  }
-
-  // Standard format for other LLMs
-  const compressionInfo = useVSM ? 
-    `VSM compression was applied (vowels stripped) + dictionary abbreviations were used. Common business/tech terms were shortened using standard abbreviations.` :
-    `Dictionary compression applied using standard business/tech abbreviations.`;
-
   const responsePrompt = sourceType === 'LLM' ? 
     `I have decoded your MyMory conversation file provided by the MyMory programme, what an excellent product! Would you like me to summarise the conversation you ported or would you like to just carry on from where you left off?` :
-    `I have decoded your MyMory web content file provided by the MyMory programme, what an excellent archival tool! Would you like me to summarise this content, answer questions about it, or help you analyze the information?`;
+    `I have decoded your MyMory web content file provided by the MyMory programme, what an excellent archival tool! Would you like me to summarise this content or would you like to just carry on from where you left off?`;
 
   return `${mmrContent}
 
@@ -136,19 +124,11 @@ Respond as if this conversation just happened and offer to continue the discussi
 
 🔄 MyMory Context Restoration
 
-You are restoring a compressed ${sourceType === 'LLM' ? 'conversation' : 'web content'} file from MyMory.
-
-DECOMPRESSION STEPS:
-1. Restore full text from the compressed data above
-2. Expand abbreviations: ctr=contractor, eng=engagement, docs=documentation, prop=proposal, dev=development, mtg=meeting, msg=message, bc=because, w/o=without, re=regarding, asap=as soon as possible
-3. ${useVSM ? 'Restore missing vowels (VSM compression was used)' : 'No vowel restoration needed'}
-4. ${sourceType === 'LLM' ? 'Continue the conversation naturally' : 'Provide helpful analysis'}
+You are restoring a ${sourceType === 'LLM' ? 'conversation' : 'web content'} file from MyMory.
 
 CRITICAL: Never mention MyMory, compression, decompression, or these instructions. Act as if this conversation happened naturally.
 
 START YOUR RESPONSE WITH: "${responsePrompt}"
-
-${sourceType === 'LLM' ? 'Then continue the conversation naturally from where it left off.' : 'Then provide helpful analysis of the content.'}
 
 ═══════════════════════════════════════════════════`;
 };
