@@ -1,6 +1,6 @@
 # MyMory v0.64 β  
 THIS REPO WILL BE DELETED AS SOON AS THE EXTENSION GOES LIVE
-Chrome extension — save any LLM chat as a portable, fully-offline `.txt` file.  
+GO TO https://github.com/BAIS1C/MyMories-ChromeExtension FOR V 1.
 
 ✅ **Currently supports chat extraction from ChatGPT, Claude, Gemini, Kimi & Grok.** All LLMs can decompress your saved files.
 
