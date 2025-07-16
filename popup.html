@@ -1,76 +1,68 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8"/>
-  <title>MyMory v0.63 β</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>MyMory v0.63 β</h1>
-
-  <!-- Context-aware warning (hidden by default) -->
-  <div id="compatibilityWarning" class="warning-note" style="display: none;">
-    ⚠️ We are unable to parse data from <span id="llmName"></span> and can only read ChatGPT, Claude, Gemini, Kimi & Grok. All LLMs can decompress your files.
+  
+  <!-- Dynamic compatibility warning -->
+  <div id="compatibilityWarning" class="warning-note" style="display:none;">
+    ⚠️ <span id="llmName">Unknown</span> has limited compatibility. MyMory will extract visible text but conversation structure may be incomplete.
   </div>
-
-  <!-- Context-aware main button -->
-  <button id="saveBtn">💾 Save MyMory as TXT</button>
-
-  <!-- New instruction text -->
-  <div class="instruction-note">
-    📋 Drag and drop your txt into any LLM and press return for instant context continuation.
-  </div>
-
-  <!-- Donation call-to-action -->
-  <div class="donate-note">
-    ❤️ <a href="https://strandsnation.xyz" target="_blank">Support Development - Donate AVAX</a>
-  </div>
-
-  <!-- Always visible options -->
+  
+  <!-- Main action button with context-aware styling -->
+  <button id="saveBtn" class="btn-success">💬 Save Chat as TXT</button>
+  
+  <!-- Options section -->
   <div class="options-section">
     <label>
-      Source Override: 
+      <input type="checkbox" id="vsmToggle"> Enhanced Compression
+    </label>
+    <div class="compression-info">Dictionary + Emojis + Text Speak + Vowel Stripping</div>
+    
+    <label>
+      <input type="checkbox" id="fullToggle"> Also save Full JSON
+    </label>
+    <div class="compression-info">Uncompressed backup with metadata</div>
+    
+    <label>
+      Override Source:
       <select id="sourceOverride">
         <option value="">Auto-detect</option>
         <option value="ChatGPT">ChatGPT</option>
         <option value="Claude">Claude</option>
         <option value="Gemini">Gemini</option>
-        <option value="Kimi">Kimi</option>
         <option value="Grok">Grok</option>
+        <option value="Kimi">Kimi</option>
+        <option value="DeepSeek">DeepSeek</option>
         <option value="Perplexity">Perplexity</option>
+        <option value="Poe">Poe</option>
         <option value="URL">Web Content</option>
-        <option value="Other">Other LLM</option>
       </select>
     </label>
-
-    <label>
-      <input type="checkbox" id="vsmToggle" checked/> VSM Compression (default - 50% smaller)
-    </label>
-    
-    <div class="compression-info">
-      💡 Uncheck if your LLM has problems in restoring.
-    </div>
-
-    <label>
-      <input type="checkbox" id="fullToggle"/> Also save full uncompressed chat (JSON)
-    </label>
   </div>
-
+  
+  <!-- Enhanced instructions -->
+  <div class="instruction-note">
+    💡 Enhanced compression uses multi-layer compression: business terms → emojis & text speak → vowel stripping for maximum token efficiency
+  </div>
+  
+  <!-- Donation note -->
+  <div class="donate-note">
+    💝 Enjoying MyMory? <a href="https://buymeacoffee.com/mymory" target="_blank">Buy us a coffee</a> to support development!
+  </div>
+  
   <footer>
-    <small>MyMory v0.63 β – LGPL © 2025 PT Metafintek (Indonesia) - Attribution Required</small><br>
-    by <a href="https://strandsnation.xyz" target="_blank">StrandsNation.xyz</a><br>
-    <span class="attribution">
-      Icon by
-      <a href="https://iconscout.com/icons/machine-learning" target="_blank">Smashing Stocks</a>
-      on
-      <a href="https://iconscout.com" target="_blank">IconScout</a>
-    </span>
+    <div>Offline • Privacy-First • Open Source</div>
+    <div class="attribution">Created for the AI community</div>
   </footer>
 
   <!-- Load compression dictionary first -->
   <script src="compression-dictionary.js"></script>
-  <!-- UMD build, no ES module -->
-  <script src="lib/transformers.umd.js"></script>
+  <!-- Then load main popup script -->
   <script src="popup.js"></script>
 </body>
 </html>

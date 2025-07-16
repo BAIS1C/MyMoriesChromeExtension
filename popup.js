@@ -162,13 +162,81 @@ const applyDictionaryCompression = (text) => {
   return compressed;
 };
 
+// NEW: Symbolic compression for emojis and text speak
+const applySymbolicCompression = (text) => {
+  return text
+    // High-value phrase → emoji replacements
+    .replace(/\btalk to you later\b/gi, 'ttyl')
+    .replace(/\bto be honest\b/gi, 'tbh') 
+    .replace(/\bon my way\b/gi, 'omw')
+    .replace(/\bby the way\b/gi, 'btw')
+    .replace(/\bfor your information\b/gi, 'fyi')
+    .replace(/\blet me know\b/gi, 'lmk')
+    .replace(/\bas soon as possible\b/gi, 'asap')
+    .replace(/\bI love (it|this|that)\b/gi, '❤️')
+    .replace(/\b(amazing|awesome|incredible|mind.?blowing)\b/gi, '🤯')
+    .replace(/\b(excellent|high quality|great|fantastic)\b/gi, '🔥')
+    .replace(/\b(good job|well done|nice work)\b/gi, '👏')
+    .replace(/\b(okay|ok|understood|got it)\b/gi, '👌')
+    .replace(/\b(thank you|thanks|thx)\b/gi, '🙏')
+    .replace(/\b(hello|hi|hey|greetings)\b/gi, '👋')
+    .replace(/\b(no worries|no problem|all good)\b/gi, '😎')
+    .replace(/\b(AI|artificial intelligence)[\s\-]?(generated|created|made)\b/gi, '🤖')
+    .replace(/\b(thinking|processing|analyzing)\b/gi, '🧠')
+    .replace(/\b(warning|alert|caution)\b/gi, '⚠️')
+    .replace(/\b(correct|right|accurate)\b/gi, '✅')
+    .replace(/\b(wrong|incorrect|error)\b/gi, '❌')
+    .replace(/\b(important|crucial|critical)\b/gi, '🎯')
+    .replace(/\b(money|payment|cost|price)\b/gi, '💰')
+    .replace(/\b(time|clock|schedule)\b/gi, '⏰')
+    .replace(/\b(question|query|ask)\b/gi, '❓')
+    .replace(/\b(idea|concept|thought)\b/gi, '💡')
+    // txtspk replacements that work well with VSM
+    .replace(/\byou\b/gi, 'u')
+    .replace(/\byour\b/gi, 'ur')
+    .replace(/\byou're\b/gi, 'ur')
+    .replace(/\bfor\b/gi, '4')
+    .replace(/\btomorrow\b/gi, 'tmrw')
+    .replace(/\byesterday\b/gi, 'ystrdy')
+    .replace(/\btoday\b/gi, 'tdy')
+    .replace(/\btonight\b/gi, 'tnght')
+    .replace(/\band\b/gi, '&')
+    .replace(/\bwith\b/gi, 'w/')
+    .replace(/\bwithout\b/gi, 'w/o')
+    .replace(/\bbecause\b/gi, 'bc')
+    .replace(/\bsomething\b/gi, 'sth')
+    .replace(/\bnothing\b/gi, 'nth')
+    .replace(/\bsomeone\b/gi, 'sb')
+    .replace(/\banyone\b/gi, 'any1')
+    .replace(/\beveryone\b/gi, 'every1')
+    .replace(/\bbefore\b/gi, 'b4')
+    .replace(/\bafter\b/gi, 'aftr')
+    .replace(/\bbetween\b/gi, 'btwn')
+    .replace(/\bthrough\b/gi, 'thru')
+    .replace(/\babout\b/gi, 'abt')
+    .replace(/\bagainst\b/gi, 'agnst')
+    .replace(/\baround\b/gi, 'arnd')
+    .replace(/\bproblem\b/gi, 'prob')
+    .replace(/\bprobably\b/gi, 'prob')
+    .replace(/\bdefinitely\b/gi, 'def')
+    .replace(/\bobviously\b/gi, 'obv')
+    .replace(/\bbasically\b/gi, 'bscly')
+    .replace(/\bessentially\b/gi, 'essntly')
+    .replace(/\bspecifically\b/gi, 'spcfcly')
+    .replace(/\bparticularly\b/gi, 'prtclry')
+    .replace(/\bespecially\b/gi, 'espcly');
+};
+
 const vsm = t => t.replace(/\B[aeiou]/gi, '');
 
+// UPDATED: Enhanced VSM with reordered pipeline
 const enhancedVSM = (text) => {
-  // First apply dictionary compression
+  // Pipeline: Dictionary → VSM → Symbolic
+  // This order prevents vowel-stripping conflicts
   let compressed = applyDictionaryCompression(text);
-  // Then apply vowel stripping
-  return vsm(compressed);
+  compressed = vsm(compressed); // Strip vowels first
+  compressed = applySymbolicCompression(compressed); // Apply symbols to consonant skeleton
+  return compressed;
 };
 
 document.getElementById('saveBtn').onclick = async () => {
@@ -220,7 +288,7 @@ document.getElementById('saveBtn').onclick = async () => {
     }));
 
     const chatText = processedTurns.map(t => `[${t.author}] ${t.text}`).join('\n');
-    const summary = `Summary of ${turns.length} turns${useVSM ? ' (Enhanced VSM + Dictionary)' : ' (Dictionary compression)'}`;
+    const summary = `Summary of ${turns.length} turns${useVSM ? ' (Enhanced VSM + Dictionary + Symbolic)' : ' (Dictionary compression)'}`;
 
     // Create the compressed MyMory content (just the data)
     const mmrContent = `📌 CONTEXT INJECTION – MyMory Recall
@@ -229,6 +297,7 @@ document.getElementById('saveBtn').onclick = async () => {
 - TURNS: ${turns.length}
 - VSM: ${useVSM ? 'ON' : 'OFF'}
 - Dictionary: ON
+- Symbolic: ${useVSM ? 'ON' : 'OFF'}
 >INSIGHTS
 - ${summary}
 >COMPRESSED_CHAT
@@ -244,13 +313,13 @@ ${chatText}
     // Create compressed .txt version if VSM is checked OR if neither is checked (default behavior)
     if (useVSM || !useFullJSON) {
       const filename = detection.sourceType === 'LLM' ? 
-        (useVSM ? `${detection.source}-vsm-${timestamp}.txt` : `${detection.source}-base-${timestamp}.txt`) :
-        (useVSM ? `URL-vsm-${timestamp}.txt` : `URL-base-${timestamp}.txt`);
+        (useVSM ? `${detection.source}-enhanced-${timestamp}.txt` : `${detection.source}-base-${timestamp}.txt`) :
+        (useVSM ? `URL-enhanced-${timestamp}.txt` : `URL-base-${timestamp}.txt`);
       
       const compressedBlob = new Blob([currentDecodePrompt], { type: 'text/plain' });
       const compressedUrl = URL.createObjectURL(compressedBlob);
       chrome.downloads.download({ url: compressedUrl, filename: filename });
-      console.log(`📦 Downloaded ${detection.sourceType === 'LLM' ? (useVSM ? 'Enhanced VSM' : 'Dictionary') : (useVSM ? 'VSM Web' : 'Web')} compressed .txt version`);
+      console.log(`📦 Downloaded ${detection.sourceType === 'LLM' ? (useVSM ? 'Enhanced Multi-Layer' : 'Dictionary') : (useVSM ? 'Enhanced Web' : 'Web')} compressed .txt version`);
     }
     
     // Create full JSON version if Full is checked
@@ -262,6 +331,7 @@ ${chatText}
           timestamp: timestamp,
           vsm: false, // Full version never has VSM applied
           dictionary: false, // Full version is uncompressed
+          symbolic: false, // Full version has no compression
           url: tab.url
         },
         conversations: turns // Original turns without any compression
